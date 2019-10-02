@@ -38,10 +38,9 @@ Auth::routes();
  Route::get('admin/subcategory/{id}', 'Admin\\AdminUserController@getSubcategory');
 
 
-Route::get('/admin', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/admin', 'Auth\LoginController@showLoginForm')->name('login');;
 
 Route::resource('admin/user', 'Admin\\AdminUserController')->middleware('role:admin');
-
 
 
 Route::resource('admin/banner', 'banner\\BannerController')->middleware('role:admin');

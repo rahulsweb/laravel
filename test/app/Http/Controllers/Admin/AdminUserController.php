@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 use Spatie\Permission\Models\Role;
-use App\Http\Requests;
+use App\Http\Requests\AdminUserRequest;
+use App\Http\Requests\AdminUserUpdateRequest;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\User;
@@ -20,7 +21,11 @@ class AdminUserController extends Controller
      * @return \Illuminate\View\View
      */
 
-  
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+   
 
     public function dashboard(Request $request)
     {
@@ -61,17 +66,9 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(AdminUserRequest $request)
     {
-        $this->validate($request, [
-            'first_name' => 'alpha|required',
-            'last_name' => 'alpha|required',
-            'password' => 'alpha_num|required|min:8|same:confirm_password',
-            'email' => 'required|email|unique:users',
-            'roles'=>'required',
-            'confirm_password'=>'required'
-      
-        ]);
+       
 
 
 
@@ -127,21 +124,13 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(AdminUserUpdateRequest $request, $id)
     {
-
-        $this->validate($request, [
-            'first_name' => 'alpha',
-            'last_name' => 'alpha',
-          
-          
-         
-    
-      
-        ]);
-
+       
         $adminuser = User::findOrFail($id);
-  
+   if($adminuser->getRoleNames()[0])
+        $adminuser->removeRole($adminuser->getRoleNames()[0]);
+
         $adminuser->assignRole($request->roles);
       
 
@@ -150,7 +139,7 @@ class AdminUserController extends Controller
         }else{
             $request = array_except($request,array('password'));
         }
-        
+
         $adminuser->update($request->all());
 
         return redirect('admin/user')->with('flash_message', 'AdminUser updated!');

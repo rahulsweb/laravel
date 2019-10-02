@@ -92,9 +92,18 @@
                                   
                      
                                          
-      
-                                    <td>{{ $item->categories[0]->name }}</td>   
-                                 
+      @if(isset($item->categories[0]->name))
+                                    <td>
+                                     <strong class="text-success"> 
+                                      {{$item->categories[0]->name}}
+                                   </strong>
+                                      </td> 
+                                        @else
+                                      <td>
+                                                                            <strong class="text-danger"> N/A </strong>
+
+                                      </td>  
+                                 @endif
                                                     
                                      <td>
                                                 <a href="{{ url('/admin/product/' . $item->id) }}" title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

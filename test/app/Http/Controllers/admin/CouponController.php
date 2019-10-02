@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests;
+use App\Http\Requests\CouponRequest;
+use App\Http\Requests\CouponUpdateRequest;
 use App\Http\Controllers\Controller;
 
 use App\Coupon;
@@ -56,7 +58,7 @@ class CouponController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CouponRequest $request)
     {
           $role= Role::find(3);
           $permissions=Permission::all('name');
@@ -65,8 +67,7 @@ class CouponController extends Controller
         {
            $name[]=$permission->name;
         }
-        print_r($name);
-        dd("dne");
+
         $requestData = $request->all();
       
         Coupon::create($requestData);

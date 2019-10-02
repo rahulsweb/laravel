@@ -12,7 +12,6 @@ class LoginController extends Controller
 
   
   
-  
 
     public function login(Request $request)
     {
@@ -51,7 +50,7 @@ class LoginController extends Controller
 
     public function adminLogout(Request $request)
 {
- 
+
     if(\Auth::check())
     {
         \Auth::logout();

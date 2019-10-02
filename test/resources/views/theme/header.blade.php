@@ -121,18 +121,22 @@
               <!-- The user image in the navbar-->
               <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
+             @if(isset(auth()->user()->id ))
               <span class="hidden-xs">{{ ucfirst(auth()->user()->first_name)." ".ucfirst(auth()->user()->last_name)}}</span>
+              @endif
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
                 <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
-
+     @if(isset(auth()->user()->id ))
                 <p>
+                
                     <span class="hidden-xs">{{ ucfirst(auth()->user()->first_name)." ".ucfirst(auth()->user()->last_name)}}</span>
                     - Web Developer
                   <small>Member since Nov. 2012</small>
                 </p>
+                   @endif
               </li>
               <!-- Menu Body -->
               <li class="user-body">

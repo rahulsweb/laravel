@@ -21,18 +21,19 @@ class FrontendController extends Controller
     public function index()
     { 
         $banners=Banner::all();
-        $products=Product::paginate(6);
+        $products=Product::GetUser();
         $categories=Category::all();
-      
-      
+
+      dd($products);
         return view('frontend_theme.index',compact('products','categories','banners'));
     }
     public function subcategory($id)
     {
+      
         $banners=Banner::all(); 
         $categories=Category::all();
-       $products =  Product::with('product_category')->whereHas(
-        'product_category',  function($q) use($id) { $q->where('category_id', $id);
+       $products =  Product::with('categories')->whereHas(
+        'categories',  function($q) use($id) { $q->where('category_id', $id);
    })->get();
   
     // $products=Product::whereHas('product_category')->get();

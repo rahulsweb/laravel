@@ -46,8 +46,9 @@
 
                                
                                 <form method="POST" action="{{ url('/admin/user/' . $adminuser->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                   {{ method_field('PUT') }}
                                   {{ csrf_field() }} 
-                                  {{ method_field('PUT') }}
+            
                                   
         
                                     @include ('admin.user.form', ['formMode' => 'edit'])

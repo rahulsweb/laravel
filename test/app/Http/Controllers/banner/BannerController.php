@@ -4,7 +4,8 @@ namespace App\Http\Controllers\banner;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\BannerRequest;
+use App\Http\Requests\BannerUpdateRequest;
 use App\Banner;
 use Illuminate\Http\Request;
 use DB;
@@ -56,16 +57,10 @@ class BannerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(BannerRequest $request)
     {
         
-        $this->validate($request, [
-            'name' => 'required',
-            'image' => 'image',
-            
-      
-        ]);
-
+       
      
         $banner=new Banner;
        
@@ -103,9 +98,8 @@ class BannerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
+    public function show(Banner $banner)
     {
-        $banner = Banner::findOrFail($id);
 
         return view('admin.banner.banner.show', compact('banner'));
 
@@ -120,9 +114,9 @@ class BannerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Banner $banner)
     {
-        $banner = Banner::findOrFail($id);
+
 
         return view('admin.banner.banner.edit', compact('banner'));
     }
@@ -135,7 +129,7 @@ class BannerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(BannerUpdateRequest $request, Banner $banner)
     {
         $location='Product Image/';
         $requestData = $request->all();
@@ -163,7 +157,7 @@ class BannerController extends Controller
 
 $data=array('name'=>$request->name,"image"=>$image,'description'=>$request->description);
 
- DB::table('banners')->where('id', $id)->update($data);
+ DB::table('banners')->where('id', $banner->id)->update($data);
 
 
        
@@ -182,9 +176,9 @@ $data=array('name'=>$request->name,"image"=>$image,'description'=>$request->desc
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
+    public function destroy(Banner $banner)
     {
-        Banner::destroy($id);
+      $banner->delete();
 
         return redirect('admin/banner')->with('flash_message', 'Banner deleted!');
     }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\ CategoryRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use App\Category;
 use Illuminate\Http\Request;
 use DB;
 class CategoryController extends Controller
-{
+{ 
     public function __construct()
     {
         $this->middleware('auth');
@@ -55,12 +56,9 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:categories',
-           'parent_id'=>'nullable',
-        ]);
+
         $requestData = $request->all(); 
     
        $category= new Category;
@@ -92,10 +90,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
         $categories = Category::all();   
-        $category = Category::findOrFail($id);
+       
 
         return view('admin.category.edit', compact('category','categories'));
     }
@@ -108,12 +106,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
         
         $requestData = $request->all();
         
-        $category = Category::findOrFail($id);
         $category->update($requestData);
 
         return redirect('admin/category')->with('flash_message', 'Category updated!');
@@ -126,13 +123,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
 
-        Category::destroy($id);
-
-        $category =array('parent_id'=>'0');
-        DB::table('categories')->where('parent_id', $id)->update($category);
+        $category->delete();
+        $category_parent =array('parent_id'=>'0');
+        DB::table('categories')->where('parent_id', $category->id)->update($category_parent);
         return redirect('admin/category')->with('flash_message', 'Category deleted!');
     }
 }

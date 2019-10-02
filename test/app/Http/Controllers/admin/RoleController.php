@@ -56,7 +56,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         
         $requestData = $request->all();
@@ -82,10 +82,9 @@ class RoleController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        $role = Role::findOrFail($id);
-
+        
         return view('admin.role.show', compact('role'));
     }
 
@@ -96,11 +95,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        $role = Role::find($id);
         $permissions = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$role->id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
 
@@ -115,16 +113,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
       
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
-        ]);
 
 
-        $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
 

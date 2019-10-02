@@ -4,7 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
 use App\ProductImage;
 use App\ProductAttribute;
@@ -61,18 +62,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
 
-        $this->validate($request, [
-            'name' => 'required|unique:products',
-            'rate' => 'numeric|required',
-            'color' => 'alpha|required',
-            'quantity' => 'numeric|required|',
-            'image.*'=>'image|mimes:jpg,jpeg,bmp,png,gif|max:2045',
-            'category'=>'required',
-            'subcategory'=>'required'
-        ]);
+       
         $requestData = $request->all();
   
 
@@ -144,9 +137,8 @@ class ProductController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
+    public function show(Product $product) 
     {
-        $product = Product::findOrFail($id);
 
         return view('admin.product.show', compact('product'));
     }
@@ -176,33 +168,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
   
-        $this->validate($request, [
-           
-            'rate' => 'numeric',
-            'color' => 'alpha',
-            'quantity' => 'numeric',
-            'image.*'=>'image|mimes:jpg,jpeg,bmp,png,gif|max:2045',
-   
-      
-        ]);
+     
     
 
         $products=array('name'=>$request->name,"rate"=>$request->rate);
 
-        DB::table('products')->where('id', $id)->update($products);
+        $product->update($products);
        
 
        
-        $products_attributes=array('color'=>$request->color,"quantity"=>$request->quantity,'product_id'=>$id);
+        $products_attributes=array('color'=>$request->color,"quantity"=>$request->quantity,'product_id'=>$product->id);
+        $product_attribute=ProductAttribute::where('product_id',$product->id); 
 
-        DB::table('product_attributes')->where('product_id', $id)->update($products_attributes);
-
-        $products_categories=array('category_id'=>$request->subcategory,'product_id'=>$id);
-
-        DB::table('category_product')->where('product_id', $id)->update( $products_categories);
+        $product_attribute->update( $products_attributes);
+        $products_categories=array('category_id'=>$request->subcategory,'product_id'=>$product->id);
+        $category_product=ProductCategory::where('product_id', $product->id);
+       $category_product->update($products_categories);
+  
     
         if($request->hasFile('image'))
         {
@@ -211,7 +196,7 @@ class ProductController extends Controller
         $files = $request->file('image');
         $location='Product Image/';
      
-        $imageName=ProductImage::where('product_id',$id)->get();
+        $imageName=ProductImage::where('product_id',$product->id)->get();
   
      
         foreach($files as $file){
@@ -226,7 +211,7 @@ class ProductController extends Controller
    
       $product_image=new ProductImage;
         $product_image->name=$location.$filename;
-        $product_image->product_id=$id;
+        $product_image->product_id=$product->id;
         $product_image->save();
         $result=$file->move($location,$filename);
         echo "1";
@@ -259,10 +244,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        Product::destroy($id);
-
+            $product->delete();
         return redirect('admin/product')->with('flash_message', 'Product deleted!');
     }
 
