@@ -7,7 +7,7 @@ use URL;
 use Session;
 use Redirect;
 use Illuminate\Support\Facades\Input;
-
+use App\Order;
 use App\Cart;
 use App\CartDetail;
 
@@ -108,14 +108,36 @@ class AddMoneyController extends Controller
             $oldCart=Session::get('cart');
             
             $cart=new Cart($oldCart);
-            foreach($cart as $key => $value) {
-            dd($request->all());
-                
-       
-            }
+            $order=new Order;
          
-    
-          
+            $order_data=[
+                'order_code'=>'OD_'.now()->timestamp,
+                'user_id'=>auth()->user()->id
+
+            ];
+            $order->create($order_data);
+         
+            foreach($cart->items as $id=>$product)
+            {
+                // $cartdetail=new CartDetail;
+                // $cartdata=[
+
+                //     'name'=>$product['item']->name, 
+                //     'rate'=> $product['item']->rate,  
+                //       'color'=>$product['item']->product_attribute->color,
+                //         'qty'=>$product['qty'],
+                //         'image'=>$product['item']->product_image[0]->name,
+                //         'product_id'=>$product['item']->id,
+                   
+           
+              
+                // ];
+                 
+                // $cartdetail->create($cartdata);
+       
+
+            }
+            // Session::forget('cart');
          
         } catch (\PayPal\Exception\PPConnectionException $ex) {
             if (\Config::get('app.debug')) {

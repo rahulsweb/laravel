@@ -36,7 +36,8 @@ class CheckoutController extends Controller
         }
         $oldCart=Session::get('cart');
         $cart=new Cart($oldCart);
-        //
+
+  //
         if(Auth::check())
          return view('frontend_theme.shop.checkout',['products'=>$cart->items,'totalPrice'=>$cart->totalPrice,'addresses'=>$addresses]);
         

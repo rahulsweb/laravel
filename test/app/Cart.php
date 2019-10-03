@@ -31,6 +31,7 @@ class Cart extends Model
     public function addProduct($item,$id)
     {
     
+    
         $store=['qty'=>0,'price'=>$item->rate,'item'=>$item];
         if($this->items)
         {

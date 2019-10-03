@@ -57,7 +57,7 @@ class Product extends Model
         return $this->hasMany(CartDetail::class,'product_id','id');
        
     }
-    public function scopeGetUser($query)
+    public function scopeGetProduct($query)
     {
             return $query->get();
     }    

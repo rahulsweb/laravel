@@ -21,10 +21,10 @@ class FrontendController extends Controller
     public function index()
     { 
         $banners=Banner::all();
-        $products=Product::GetUser();
+        $products=Product::GetProduct();
         $categories=Category::all();
 
-      dd($products);
+    
         return view('frontend_theme.index',compact('products','categories','banners'));
     }
     public function subcategory($id)

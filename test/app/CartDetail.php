@@ -13,7 +13,7 @@ class CartDetail extends Model
      *
      * @var string
      */
-    protected $table = 'carts';
+    protected $table = 'cart_details';
 
     /**
     * The database primary key value.
@@ -27,7 +27,7 @@ class CartDetail extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code', 'rate','color','image','qty','product_id','user_id','session_id'];
+    protected $fillable = ['name',  'rate','color','image','qty','product_id'];
     
 
  
@@ -36,10 +36,6 @@ class CartDetail extends Model
         return $this->belongsToMany(Product::class,'product_id','id');
        
     }
-    public function user()
-    {
-        return $this->belongsToMany(User::class,'user_id','id');
-       
-    }
+ 
 
 }
