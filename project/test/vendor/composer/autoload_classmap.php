@@ -60,6 +60,7 @@ return array(
     'App\\Http\\Controllers\\frontend\\SearchController' => $baseDir . '/app/Http/Controllers/frontend/SearchController.php',
     'App\\Http\\Controllers\\frontend\\WishListController' => $baseDir . '/app/Http/Controllers/frontend/WishListController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
+    'App\\Http\\Middleware\\AdminMiddleware' => $baseDir . '/app/Http/Middleware/AdminMiddleware.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',
     'App\\Http\\Middleware\\Frontend' => $baseDir . '/app/Http/Middleware/Frontend.php',
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',

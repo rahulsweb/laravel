@@ -566,6 +566,7 @@ class ComposerStaticInit1c293408565607809a8bd3c3b092e0ec
         'App\\Http\\Controllers\\frontend\\SearchController' => __DIR__ . '/../..' . '/app/Http/Controllers/frontend/SearchController.php',
         'App\\Http\\Controllers\\frontend\\WishListController' => __DIR__ . '/../..' . '/app/Http/Controllers/frontend/WishListController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
+        'App\\Http\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminMiddleware.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\Frontend' => __DIR__ . '/../..' . '/app/Http/Middleware/Frontend.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
