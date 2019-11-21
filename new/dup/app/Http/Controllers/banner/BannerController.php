@@ -15,28 +15,21 @@ class BannerController extends Controller
    public function __construct()
     {
         $this->middleware('auth');
-      
-        $this->middleware(['role:admin']);
     }
     /**
+     * banner display on frontend slider 
+     * there is operation create banner ,
+     * delete ,update
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
+   //banners listing on index page banner 
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $banner = Banner::where('name', 'LIKE', "%$keyword%")
-                ->orWhere('image', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
+       
             $banner = Banner::latest()->paginate($perPage);
-        }
-
+      
         return view('admin.banner.banner.index', compact('banner'));
     }
 
@@ -45,6 +38,7 @@ class BannerController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    //banner create view form 
     public function create()
     {
         return view('admin.banner.banner.create');
@@ -57,16 +51,13 @@ class BannerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
+    //store banner data in a database
     public function store(BannerRequest $request)
     {
-        
-       
-     
+  
+    
         $banner=new Banner;
-       
-
-            
-
+ 
             $banner->name=$request->name;
             $banner->description=$request->description;
 
@@ -98,6 +89,7 @@ class BannerController extends Controller
      *
      * @return \Illuminate\View\View
      */
+   //specific show banner 
     public function show(Banner $banner)
     {
 
@@ -114,6 +106,7 @@ class BannerController extends Controller
      *
      * @return \Illuminate\View\View
      */
+   //banner edit form display on screen
     public function edit(Banner $banner)
     {
 
@@ -136,8 +129,8 @@ class BannerController extends Controller
         $destinationPath = public_path('/images/');
   
       
-    $image =$request->b_image;
-    $file = $request->file('image');
+         $image =$request->b_image;
+         $file = $request->file('image');
   
        
       
@@ -176,6 +169,7 @@ $data=array('name'=>$request->name,"image"=>$image,'description'=>$request->desc
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
+   //specific  banner delete  method 
     public function destroy(Banner $banner)
     {
       $banner->delete();
