@@ -61,7 +61,7 @@ class BannerController extends Controller
             $banner->name=$request->name;
             $banner->description=$request->description;
 
-        // Set user name
+        // Set Banner Image in database 
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
