@@ -31,14 +31,14 @@ class WishListController extends Controller
     {
 
         $products = Product::with('users', 'product_image', 'product_attribute', 'categories')->get();
-        $product_image = ProductImage::all();
+        $productImage = ProductImage::all();
         if (!Session::has('cart')) {
-            return view('frontend_theme.shop.wishlist', compact('products', 'product_image'));
+            return view('frontend_theme.shop.wishlist', compact('products', 'productImage'));
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
-        return view('frontend_theme.shop.wishlist', compact('products', 'cart', 'product_image'));
+        return view('frontend_theme.shop.wishlist', compact('products', 'cart', 'productImage'));
 
     }
     //Storing data about wishlist 
@@ -47,9 +47,9 @@ class WishListController extends Controller
 
         $wishlist = new WishList;
         if (auth()->user()->id) {
-            $wishlist_data = $wishlist->where('product_id', '=', $request->wish)->where('user_id', '=', auth()->user()->id)->pluck('id');
+            $wishlistData = $wishlist->where('product_id', '=', $request->wish)->where('user_id', '=', auth()->user()->id)->pluck('id');
 
-            if (!count($wishlist_data)) {
+            if (!count($wishlistData)) {
 
                 $data = [
                     'user_id' => auth()->user()->id,
@@ -61,9 +61,9 @@ class WishListController extends Controller
 
             }
 
-            return back()->with('wishlist_add', "WishList add Successfully");
+            return back()->with('wishlistData', "WishList add Successfully");
         }
-        return back()->with('wishlist_add', "please Login Your Account");
+        return back()->with('wishlistData', "please Login Your Account");
     }
 
     //Delete wishlist Information 
